@@ -15,6 +15,15 @@ class Graph():
 
         self.dict_made = False
 
+
+        # later we will need the priority queue and visited set.
+        self.priority_queue = []
+        self.visited_set = set()
+
+
+        # shortest path dict. This will have nodes and the shortest path so far...if a shorter path is found, update.
+        self.shortest_path_dict = {}
+
     def create_adjacency_dict(self):
         
 
@@ -59,21 +68,13 @@ class Graph():
 
     def solve(self, start_node, end_node):
 
+        # add to visited set.
+        self.visited_set.add(start_node)
+
         # given a starting and finish node, find the shortest path between them using dijkstra's algorithm
 
         # start with neighbors of start
         weighted_neighbors = self.adjacency_dict[start_node]
-
-        # now...the hard part is setting up the piority queue and the visited set. The priority queue will be a list to start (deque in prod).
-        priority_queue = []
-
-        # visited set.
-        visited_set = set()
-        visited_set.add(start_node)
-
-        # shortest path dict. This will have nodes and the shortest path so far...if a shorter path is found, update.
-        shortest_path_dict = {}
-
 
         # now we have to explore ... we assume that the graph is connected and can only expand one node at a time.
         # now this becomes recursive. We need to check to see if it has been explored, if yes, see if new shortest path, if yes, update, if no, keep, if not, add to visited set and move on.
