@@ -65,29 +65,3 @@ class Graph():
             
 
         self.dict_made = True
-
-    def solve(self, start_node, end_node):
-
-        # add to visited set.
-        self.visited_set.add(start_node)
-
-        # given a starting and finish node, find the shortest path between them using dijkstra's algorithm
-
-        # start with neighbors of start
-        weighted_neighbors = self.adjacency_dict[start_node]
-
-        # now we have to explore ... we assume that the graph is connected and can only expand one node at a time.
-        # now this becomes recursive. We need to check to see if it has been explored, if yes, see if new shortest path, if yes, update, if no, keep, if not, add to visited set and move on.
-        # when this becomes recusive, I am not sure if the dicts and stuff stay in scope 
-        for neighbor, distance in weighted_neighbors:
-
-
-            visited_set.add(neighbor)
-
-
-
-
-
-
-
-        
