@@ -14,77 +14,73 @@ class Dijkstra:
     def one_expansion(self, node, end_node):
         # recusive function that expands the graph one node at a time, and returns the shortest path and length if the end node is reached.
 
-        if not True:
-            raise Exception("Node must be in the graph.")
+        # base case
+        if node == end_node:
+            return (self.get_node_chain(node), self.shortest_path_dict[node])
         
+
+        # recursive case
         else:
-            
-            # check end condition
-            if node == end_node:
-                
-                # for end node to be expanded into, it must already have been added to the piority queue
-                return self.shortest_path_dict[node]
-            
-            else:
+            # no need to check if the node is in visited, as shortest legth is guaranteed to be rewritten, and therefore, the invariant holds.
 
-                # if not the end node, then we must look at the neighbors of this node, then sort them into the priority queue, then select the next node to explore.
+            #check neighbors
 
-                # this returns a list of tuples
-                neighbors = self.graph[node]
-
-                # we need to update the shortest path dict for each neighbor
-                # I am not sure if this has the shortest path for this node...if we start the dict with shortest_path[start_node] = 0, then we can update like this.
-
-                for neighbor, weight in neighbors:
+            for neighbor, weight in self.graph[node]:
+                # add to fronteir / possible nodes to visit only if it has not been visited yet.
+                if neighbor not in self.visited_set:
                     self.perspective_nodes.add(neighbor)
-                    
-                    
-                    # remove the node we just searched
-                    if node in self.perspective_nodes:
-                        self.perspective_nodes.remove(node)
 
-                    if neighbor in self.visited_set:
-                        # if the neighbor is already in the dict, compare and then chose to update
-                        if neighbor in self.shortest_path_dict:
-                            # if the new path is shorter, update the shortest path dict and previous node dict
-                            if self.shortest_path_dict[node] + weight < self.shortest_path_dict[neighbor]:
-                                self.shortest_path_dict[neighbor] = self.shortest_path_dict[node] + weight
-                                self.previous_node[neighbor] = node
-                    else:
-                        # put the shortest paths in the dict ... node will always have one when this is code with node ...
-                        self.shortest_path_dict[neighbor] = self.shortest_path_dict[node] + weight
-                        self.previous_node[neighbor] = node
+                # WAIT....can't blindly update this, since it might have a lower value if anythig.
+                # maybe just check, if so, then update. Using visited here would not make sense, since we want to update shortest path regardless of visited status.
+                if neighbor not in self.shortest_path_dict:
+                    # THIS DISTANCE IS FINAL
+                    self.shortest_path_dict[neighbor] = self.shortest_path_dict[node] + weight
+                    self.previous_node[neighbor] = node
+                # if neighbor exists and there is a shorter path. COULD HAPPEN AS LONG AS IT HAS NOT BEEN POPPED.
+                elif neighbor not in self.visited_set and self.shortest_path_dict[node] + weight < self.shortest_path_dict[neighbor]:
+                    self.shortest_path_dict[neighbor] = self.shortest_path_dict[node] + weight
+                    self.previous_node[neighbor] = node
 
-                    
- 
-                # resort the priority queue based on the shortest path to each neighbor
-                # note, cannot just sort the priority queue based on visited node, these are all prospective nodes. We could also make a set for this.
-                self.priority_queue = sorted(list(self.perspective_nodes), key=lambda x: self.shortest_path_dict[x])
+            # now remove the node from the perspective set, since it has been visited.
+            # CAREFUL, start node might not be in teh set, so only remove if it is in the set.
+            if node in self.perspective_nodes:
+                self.perspective_nodes.remove(node)
 
+            # sort based on the shortest path so far
+            # FILTER
+            self.priority_queue = self.sort_list([(node, weight) for (node, weight) in self.shortest_path_dict.items() 
+                                                      if (node not in self.visited_set)], final=[])
 
-                # final recusive call
-                return self.one_expansion(self.priority_queue[0], end_node)
+            # select the next node
+            next_node = self.priority_queue[0][0]
 
-    def sort_list(self, list, final=[]):
-        ### sort the list of integer
+            # ONCE POPPED, distance is set, and it has been visited.
+            self.visited_set.add(next_node)
+
+            #finally, make the rec call
+            return self.one_expansion(next_node, end_node)
+
+                
+    def sort_list(self, list_of_tuples, final=[]):
+        ### sort the list of tuples based on the second element of the tuple (the weight) using recursion. This is a helper function for the priority queue.
         
         # if the len is 0, return the final list
-        if len(list) == 0:
+        if len(list_of_tuples) == 0:
             return final
         
         # else recusively call, finding the minuim element and sorting the rest
         else:
             # set the first element to the min to start
-            min = list[0]
+            min = list_of_tuples[0][1]
 
             # find min
-            for ele in list:
-                if ele < min:
-                    min = ele
+            for node, weight in list:
+                if weight < min:
+                    min = weight
             # add lowest
-            final.append(min)
+            final.append((node, weight))
             # remove
-            remove = set(list).remove(min)
+            remove = set(list_of_tuples).remove((node, weight))
             # convert back to list
             new_list = list(remove)
 
@@ -119,6 +115,7 @@ class Dijkstra:
         
         self.shortest_path_dict[start_node] = 0
         self.previous_node[start_node] = None
+        self.visited_set.add(start_node)
 
         # start the recusive function
         return self.one_expansion(start_node, end_node)
