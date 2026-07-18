@@ -26,16 +26,19 @@ class Dijkstra:
             #check neighbors
 
             for neighbor, weight in self.graph[node]:
-                # add to fronteir / possible nodes to visit only if it has not been visited yet.
-                if neighbor not in self.visited_set:
-                    self.perspective_nodes.add(neighbor)
+                # add to fronteir / possible nodes to visit only if it has not been visited yet. Not needed, we can do thsi through the shortest path dict and visited set. 
+                """if neighbor not in self.visited_set:
+                    self.perspective_nodes.add(neighbor)"""
 
                 # WAIT....can't blindly update this, since it might have a lower value if anythig.
                 # maybe just check, if so, then update. Using visited here would not make sense, since we want to update shortest path regardless of visited status.
                 if neighbor not in self.shortest_path_dict:
                     # THIS DISTANCE IS FINAL
                     self.shortest_path_dict[neighbor] = self.shortest_path_dict[node] + weight
+
+                    # how the final distance was created
                     self.previous_node[neighbor] = node
+
                 # if neighbor exists and there is a shorter path. COULD HAPPEN AS LONG AS IT HAS NOT BEEN POPPED.
                 elif neighbor not in self.visited_set and self.shortest_path_dict[node] + weight < self.shortest_path_dict[neighbor]:
                     self.shortest_path_dict[neighbor] = self.shortest_path_dict[node] + weight
@@ -43,11 +46,11 @@ class Dijkstra:
 
             # now remove the node from the perspective set, since it has been visited.
             # CAREFUL, start node might not be in teh set, so only remove if it is in the set.
-            if node in self.perspective_nodes:
+            """if node in self.perspective_nodes:
                 self.perspective_nodes.remove(node)
-
+                """
             # sort based on the shortest path so far
-            # FILTER
+            # FILTER, otherwise previous distances could be in the priority queue
             self.priority_queue = self.sort_list([(node, weight) for (node, weight) in self.shortest_path_dict.items() 
                                                       if (node not in self.visited_set)], final=[])
 
@@ -72,20 +75,23 @@ class Dijkstra:
         else:
             # set the first element to the min to start
             min = list_of_tuples[0][1]
-
+            low = list_of_tuples[0]
             # find min
-            for node, weight in list:
+            for node, weight in list_of_tuples:
                 if weight < min:
                     min = weight
+                    low = (node, weight)
             # add lowest
-            final.append((node, weight))
+            final.append(low)
             # remove
-            remove = set(list_of_tuples).remove((node, weight))
+            temp = set(list_of_tuples)
+            
+            temp.remove(low)
             # convert back to list
-            new_list = list(remove)
+            new_list = list(temp)
 
             # rec call.
-            self.sort_list(new_list, final)
+            return self.sort_list(new_list, final)
 
 
     def add_to_sorted_list(self, tuple):
@@ -117,6 +123,8 @@ class Dijkstra:
         self.previous_node[start_node] = None
         self.visited_set.add(start_node)
 
+
+        # we do not need the perspective set, since we already have the shortest path dict and can filter based on visited.
         # start the recusive function
         return self.one_expansion(start_node, end_node)
     
