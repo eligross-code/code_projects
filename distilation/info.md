@@ -13,7 +13,7 @@ Distilation is a project that leverages local ai infra to distil user's AI usage
 
 | File | Contents |
 |---|---|
-| `database.py` | Database config, table schemas, and `INSERT` / `SELECT` functions. |
+| `database_config.py` | Database config, table schemas, and `INSERT` / `SELECT` functions. |
 | `summarize.py` | |
 | `ai_client.py` | Model-agnostic AI client that sets up infrastructure for `runtime.call_ai()`, system prompts, and AI usage metrics such as token counts and TPS. |
 | `local_stats.json` | Where local stats are stored, such as database metadata and AI usage statistics. |
