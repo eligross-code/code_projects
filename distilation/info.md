@@ -9,14 +9,12 @@ Distilation is a project that leverages local ai infra to distil user's AI usage
 - Local AI powers all summary and distillation
 - Personalization on top of sematic search --> ranking turned into a small RL system that tunes per user
 
-### Repo Structure
+## Repo Structure
 
-File | Contents
-
+| File | Contents |
 |---|---|
-|'databse.py'| Database config, Table Schemas, and INSERT / SELECT functions |
-|'summarize.py'| 
-|'ai_clinet.py'| Model agnostic AI client that sets up infrastrucute for 'runtime.call_ai()', system prompts, and AI use metric such as token counts and TPS|
-|'local_stats.json'| Where local stats are stored, such as database metadata and AI use statistics |
-
+| `database.py` | Database config, table schemas, and `INSERT` / `SELECT` functions. |
+| `summarize.py` | |
+| `ai_client.py` | Model-agnostic AI client that sets up infrastructure for `runtime.call_ai()`, system prompts, and AI usage metrics such as token counts and TPS. |
+| `local_stats.json` | Where local stats are stored, such as database metadata and AI usage statistics. |
 
