@@ -28,6 +28,9 @@ class Database():
         for table in tables:
             self.database.execute()
 
+    # always connect changes
+        self.database.commit()
+
 
     # these rely off the tables in database_config. This should be more modular...
     def insert_raw(self, ai_response : str) -> None:
