@@ -1,6 +1,10 @@
 # Distilation
 
-Distilation is a project that leverages local ai infra to distil user's AI usage into compact summaries, key knowledge, and portable context portoflios that reflect the learning and familiar within specific knowledge domains due to AI use. This can either turn into 3 things: One, a tool to reduce the overstimulation of AI responses--a second second to review and focus on after. Two, a portable memory layer that shapes all future AI conversations. Or three, a new way to measure knowledge in an era defined by chatboxes--adjacent, parallel, or othongal to our current eduction system based on degrees.
+Distilation is a project that leverages local ai infra to distil user's AI usage into compact summaries, key knowledge, and portable context portoflios that reflect the learning and familiar within specific knowledge domains due to AI use. This can either turn into 3 things: 
+
+1) A tool to reduce the overstimulation of AI responses--a second second to review and focus on after. 
+2) A portable memory layer that shapes all future AI conversations. 
+3) A new way to measure knowledge in an era defined by chatboxes--adjacent, parallel, or othongal to our current eduction system based on degrees.
 
 **Key Features**
 
