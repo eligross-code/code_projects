@@ -5,5 +5,8 @@ startup()
 
 try:
     ### write the code here
+    return 1
 finally:
     shutdown()
+
+print("commit of the day")
